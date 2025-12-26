@@ -1,0 +1,36 @@
+---
+title: "Basic Maneuvers"
+description: "Core operators and data flow concepts"
+order: 3
+reward: 10
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+In the Kusto Nebula, data flows like a river. You start with a source (a table) and channel it through a series of **operators** using the pipe `|` character. Each operator modifies the stream before passing it to the next.
+
+### 1. The Pipe (`|`)
+
+Think of the pipe as a docking port. It connects one module to the next.
+
+<Holodeck initialCode={`// Example of piping data through multiple operators
+AuthenticationEvents
+| project timestamp, hostname, src_ip, user_agent, result
+`} runFuelCost={5} client:load />
+
+### 2. Scanning the Blueprint (`getschema`)
+
+Before you can navigate a data stream, you need to know what it contains. The `getschema` operator reveals the structure of the table—its columns and data types.
+
+<Holodeck initialCode={`// Using the getschema operator
+AuthenticationEvents
+| getschema`} runFuelCost={5} client:load />
+
+### 3. Short-Range Scans (`take`)
+
+**CRITICAL PROTOCOL:** Never attempt to download an entire galaxy map at once. It will overload your ship's computer.
+
+Always use the `take` operator to grab a small sample of records when you first encounter a new table.
+
+<Holodeck initialCode={`AuthenticationEvents
+| take 10`} runFuelCost={5} client:load />

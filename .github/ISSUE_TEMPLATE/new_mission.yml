@@ -1,0 +1,41 @@
+name: 🚀 New Mission Proposal
+description: Propose a new KQL learning mission
+title: "[Mission]: "
+labels: ["new-mission", "content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new KQL learning mission? Let us know!
+  - type: input
+    id: title
+    attributes:
+      label: Mission Title
+      placeholder: e.g. "Mission 999: Dark Ops"
+    validations:
+      required: true
+  - type: textarea
+    id: concept
+    attributes:
+      label: Mission Concept
+      description: What is the story/scenario for this mission?
+      placeholder: The user needs to track down a rogue signal using the `summarize` operator...
+    validations:
+      required: true
+  - type: textarea
+    id: learning-objectives
+    attributes:
+      label: Learning Objectives
+      description: What KQL concepts will the user learn?
+      placeholder: |
+        - bin()
+        - render timechart
+        - plugin
+    validations:
+      required: true
+  - type: textarea
+    id: dataset
+    attributes:
+      label: Required Data
+      description: Does this require specific data in the Help cluster?
+      placeholder: Uses the SecurityLogs database...

@@ -1,0 +1,38 @@
+---
+title: "System Check"
+description: "Verify connection to the practice environment"
+order: 2
+reward: 5
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+Before we engage the main thrusters, we must verify that your console is receiving telemetry from the `SecurityLogs` database.
+
+### 1. Comms Check
+
+Execute a simple ping to the system. This confirms your query editor is transmitting.
+
+> **Pro Tip:** Hover over any code block and click **UPLINK** to instantly run the query in the real Azure Data Explorer environment.
+
+<Holodeck initialCode={`// Simple test query to verify cluster access
+print "Systems Online"`} runFuelCost={5} client:load />
+
+### 2. Scan for Data Streams
+
+Now, let's scan the sector for available data streams (tables). This command will list all available logs in the database.
+
+<Holodeck initialCode={`// List all tables available in the SecurityLogs database
+.show tables`} runFuelCost={5} client:load />
+
+### 3. Test Telemetry Feed
+
+Finally, let's pull a small sample of data from the `AuthenticationEvents` stream to ensure the feed is stable.
+
+<Holodeck initialCode={`// Test query to retrieve a small sample from AuthenticationEvents
+AuthenticationEvents
+| take 5`} runFuelCost={5} client:load />
+
+> **Mission Status:** If all three checks return green (valid results), your pre-flight check is complete. You are cleared for takeoff.
+
+> **Troubleshooting:** If you encounter static (errors), verify your uplink to `help.kusto.windows.net` and ensure you are locked onto the `SecurityLogs` database.

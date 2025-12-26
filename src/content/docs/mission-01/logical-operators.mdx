@@ -1,0 +1,57 @@
+---
+title: "Logical Operators"
+description: "Mastering comparisons and boolean logic"
+order: 5
+reward: 10
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+To filter data effectively, you need to speak the language of logic. These operators allow you to compare values and combine multiple conditions.
+
+### 1. Equality and Inequality
+
+*   `==`: Equals (Case-sensitive)
+*   `!=`: Does not equal
+*   `=~`: Equals (Case-insensitive) - **PILOT FAVORITE**
+*   `!~`: Does not equal (Case-insensitive)
+
+<Holodeck initialCode={`// Find all failed logins (case-insensitive)
+AuthenticationEvents
+| where result =~ "failed login"
+| take 10`} runFuelCost={5} client:load />
+
+### 2. Numerical Comparisons
+
+When dealing with counts, sizes, or levels, use standard mathematical comparisons:
+
+*   `>` : Greater than
+*   `<` : Less than
+*   `>=`: Greater than or equal to
+*   `<=`: Less than or equal to
+
+<Holodeck initialCode={`// Find files larger than 5000 bytes
+FileCreationEvents
+| where size > 5000
+| take 10`} runFuelCost={5} client:load />
+
+### 3. Combining Conditions (`and` & `or`)
+
+You can chain multiple filters together to narrow your search.
+
+*   `and`: Both conditions must be true.
+*   `or`: At least one condition must be true.
+
+<Holodeck initialCode={`// Find failed logins for a specific user
+AuthenticationEvents
+| where result =~ "failed login" and username == "jadenman"
+| take 10`} runFuelCost={5} client:load />
+
+### 4. Set Logic (`in` & `!in`)
+
+The `in` operator checks if a value exists within a list of possibilities.
+
+<Holodeck initialCode={`// Find specific crew members by name
+Employees
+| where name in ("Aaron Bueckers", "Aaron Collinsworth", "Abe Jarrette")
+| take 10`} runFuelCost={5} client:load />

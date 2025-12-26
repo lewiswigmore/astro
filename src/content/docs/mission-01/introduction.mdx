@@ -1,0 +1,54 @@
+---
+title: "Mission Briefing"
+description: "Overview of KQL and what you'll learn"
+order: 1
+reward: 5
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+Welcome to the cockpit, Cadet. You are about to embark on a journey through the **Kusto Nebula**. Your vessel is powered by **KQL (Kusto Query Language)**, the most efficient propulsion system for navigating massive streams of telemetry data.
+
+In this first session, our objective is to get you flight-ready. By the end of this mission, you will be able to:
+
+*   **Navigate** the data galaxy (Tables & Columns)
+*   **Filter** out cosmic noise (Where & Project)
+*   **Analyze** signal patterns (Summarize & Render)
+
+## The Holodeck
+
+Before we proceed, test your console in the simulation environment below. This is a **Tactical Holodeck Simulation** - it allows you to practice KQL syntax safely before connecting to a live cluster.
+
+*   **Run Simulation:** Executes the query in our simulator and awards **Stardust** for successful completion.
+*   **Real-World Uplink:** Opens your current query in the actual **Azure Data Explorer (ADX)** environment for live execution against the `help` cluster.
+
+<Holodeck runFuelCost={5} client:load />
+
+## Target Coordinates
+
+We will be conducting our maneuvers in the **SecurityLogs** sector, focusing on primary data streams:
+
+*   `AuthenticationEvents`: Records of personnel accessing the ship's systems.
+*   `FileCreationEvents`: Intercepting signals of new files generated across the network.
+*   `Employees`: The central crew manifest.
+
+We may also intercept signals from `InboundBrowsing` and `OutboundBrowsing` for advanced tactical training.
+
+## Pre-Flight Checklist
+
+Before we ignite the engines, you must establish a secure uplink to the training simulation.
+
+### 🚀 Uplink Procedure:
+
+1.  Open your comms channel to: [aka.ms/adx](https://aka.ms/adx)
+2.  Authenticate with your **Microsoft ID**.
+3.  In the navigation panel, select **"Add Connection"**.
+4.  Enter the training cluster coordinates: `help.kusto.windows.net`
+5.  Lock on to the `SecurityLogs` database.
+
+> **Warning:** The `help` cluster is a public frequency. Do not transmit classified data over this channel. Stick to the simulation parameters.
+
+---
+
+**Status:** Systems Online.
+**Next Objective:** Verify Uplink.

@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import MissionControlHeader from '../components/MissionControlHeader';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+const allDocs = await getCollection('docs');
+const playableDocs = allDocs.filter(doc => doc.slug.startsWith('mission-'));
+---
+
+<!doctype html>
+<html lang="en" class="h-full">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`}favicon.svg`} />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} - Astro</title>
+		<script is:inline>
+			// Pre-configure Monaco Environment to avoid Worker CORS/Network errors
+			// We use a blob worker to bypass origin restrictions on importScripts
+			window.MonacoEnvironment = {
+				getWorkerUrl: function (workerId, label) {
+					const v = '0.52.0';
+					const base = `https://cdn.jsdelivr.net/npm/monaco-editor@${v}/min/vs`;
+					if (label === 'json') return `data:text/javascript;charset=utf-8,${encodeURIComponent(`importScripts('${base}/language/json/jsonWorker.js');`)}`;
+					if (label === 'css' || label === 'scss' || label === 'less') return `data:text/javascript;charset=utf-8,${encodeURIComponent(`importScripts('${base}/language/css/cssWorker.js');`)}`;
+					if (label === 'html' || label === 'handlebars' || label === 'razor') return `data:text/javascript;charset=utf-8,${encodeURIComponent(`importScripts('${base}/language/html/htmlWorker.js');`)}`;
+					if (label === 'typescript' || label === 'javascript') return `data:text/javascript;charset=utf-8,${encodeURIComponent(`importScripts('${base}/language/typescript/tsWorker.js');`)}`;
+					return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+						self.MonacoEnvironment = { baseUrl: '${base}' };
+						importScripts('${base}/base/worker/workerMain.js');
+					`)}`;
+				}
+			};
+		</script>
+		<ViewTransitions />
+	</head>
+	<body class="h-screen flex flex-col overflow-hidden">
+		<!-- Global Loading Overlay -->
+		<div id="loading-overlay" class="fixed inset-0 z-[9999] bg-space-black flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+			<div class="relative">
+				<div class="w-24 h-24 border-2 border-nebula-500/20 rounded-full animate-ping absolute inset-0"></div>
+				<div class="w-24 h-24 border-2 border-nebula-400/40 rounded-full animate-pulse flex items-center justify-center">
+					<div class="w-12 h-12 border-t-2 border-thrust-400 rounded-full animate-spin"></div>
+				</div>
+			</div>
+			<div class="mt-8 font-mono text-xs tracking-[0.3em] text-thrust-400 animate-pulse uppercase">
+				Neural Link Synchronizing...
+			</div>
+			<div class="mt-2 w-48 h-1 bg-space-900 rounded-full overflow-hidden border border-space-700">
+				<div id="loading-bar" class="h-full bg-gradient-to-r from-nebula-600 to-thrust-500 w-0 transition-all duration-500 ease-out"></div>
+			</div>
+		</div>
+
+		<MissionControlHeader client:load docs={playableDocs} />
+		<slot />
+
+		<script>
+			function setupLoading() {
+				const overlay = document.getElementById('loading-overlay');
+				const bar = document.getElementById('loading-bar');
+				
+				const showLoading = () => {
+					if (overlay && bar) {
+						overlay.classList.remove('opacity-0');
+						overlay.classList.remove('pointer-events-none');
+						bar.style.width = '60%';
+					}
+				};
+
+				const hideLoading = () => {
+					if (overlay && bar) {
+						bar.style.width = '100%';
+						setTimeout(() => {
+							overlay.classList.add('opacity-0');
+							overlay.classList.add('pointer-events-none');
+							setTimeout(() => {
+								bar.style.width = '0%';
+							}, 300);
+						}, 500); // Slightly longer delay for "vibes"
+					}
+				};
+
+				// Handle View Transitions
+				document.addEventListener('astro:before-preparation', showLoading);
+				document.addEventListener('astro:page-load', hideLoading);
+
+				// Handle hard refreshes (data-astro-reload)
+				document.addEventListener('click', (e) => {
+					const target = e.target as HTMLElement;
+					const link = target.closest('a');
+					if (link && link.hasAttribute('data-astro-reload')) {
+						showLoading();
+					}
+				});
+
+				// Initial hide if already loaded (e.g. back button)
+				if (document.readyState === 'complete') {
+					hideLoading();
+				}
+			}
+
+			// Initialize on first load
+			setupLoading();
+		</script>
+	</body>
+</html>

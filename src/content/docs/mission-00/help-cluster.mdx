@@ -1,0 +1,64 @@
+---
+title: "Uplink"
+description: "What the ADX help cluster is, why we use it and how to explore it safely"
+order: 2
+reward: 5
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+The **ADX `help` cluster** is a public training environment maintained by Microsoft. It serves as our primary target for real-world data exploration.
+
+In this academy, the **Uplink** protocol points you to:
+
+-   **Cluster:** `help` (Public Frequency)
+-   **Database:** `SecurityLogs`
+
+## Safe Harbor
+
+-   **Safe Harbor:** It’s a sandbox environment designed for learning.
+-   **Realistic Telemetry:** It contains sample tables that mirror real-world scenarios.
+-   **Full Fidelity:** It behaves exactly like a production Kusto environment, including performance characteristics and query semantics.
+
+## Target Coordinates
+
+You will frequently intercept signals from these primary tables:
+
+-   `AuthenticationEvents`: Records of personnel login attempts.
+-   `Email`: Communication logs across the network.
+-   `Employees`: The central crew manifest.
+-   `FileCreationEvents`: Records of new files generated on systems.
+-   `OutboundBrowsing`: Logs of external web traffic.
+-   `PassiveDns`: DNS resolution history.
+-   `ProcessEvents`: Execution logs of system processes.
+-   `InboundBrowsing`: Logs of incoming web traffic.
+
+## Flight Rules
+
+-   **Public Frequency:** Treat the `help` cluster as a public space. Never transmit classified data or secrets.
+-   **Efficiency:** Prefer using **time filters** and the `take` operator when exploring new sectors to avoid overloading your sensors.
+
+## Fuel Management
+
+Executing queries in the **Holodeck** or via the **Uplink** consumes your vessel's fuel.
+
+-   **Passive Regeneration:** Your fuel cells automatically recharge at a rate of **1% per minute**.
+-   **Fuel Breaks:** If you run low, you can initiate a **Fuel Break** (available every 30 minutes) to instantly restore a significant portion of your reserves.
+
+## Tactical Exercise
+
+Execute this simple "peek" query in the Holodeck, then use the **Uplink** to see it in the live ADX environment:
+
+<Holodeck
+  client:load
+  runFuelCost={5}
+  initialCode={`// Quick peek into the training data
+ProcessEvents
+| take 50
+`}
+/>
+
+---
+
+**Status:** Uplink Verified.
+**Next Objective:** Station Tour.

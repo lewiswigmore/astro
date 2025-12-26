@@ -1,0 +1,27 @@
+---
+title: "Scanning Frequencies"
+description: "Mastering text search with contains and has"
+order: 2
+reward: 10
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+When searching through logs, the way you scan for text can significantly impact your ship's performance.
+
+### Scanning Frequencies (`contains` vs. `has`)
+
+*   `contains`: A slow, deep scan. Searches for a substring anywhere.
+*   `has`: A fast, indexed scan. Searches for whole words (tokens).
+
+<Holodeck initialCode={`// This works because "fail" is a substring of "Failed"
+AuthenticationEvents
+| where result contains "fail"
+| take 10`} runFuelCost={5} client:load />
+
+<Holodeck initialCode={`// This query won't return results - 'has' requires exact word matches
+AuthenticationEvents
+| where result has "fail"
+| take 10`} runFuelCost={5} client:load />
+
+> **Why the `has` query failed:** The `has` operator looks for complete words. "Failed" is a word. "fail" is not.

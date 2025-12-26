@@ -1,0 +1,64 @@
+---
+title: "Black Hole Challenge"
+description: "Test your knowledge with practical exercises"
+order: 6
+reward: 25
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+You have reached the event horizon. There is no turning back. Prove your skills to escape the gravity well.
+
+### Challenge 1: The Security Breach
+<span class="px-2 py-1 text-xs bg-green-900 text-green-200 border border-green-700 rounded font-mono">CLEARANCE: CADET</span>
+
+**Objective:** Find all failed logins for the user "jadenman" and only show the timestamp and source IP.
+
+> **Hint:** Use `where`, `==` (or `=~`), and `project`.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| where username == "jadenman" and result =~ "failed login"
+| project timestamp, src_ip`} runFuelCost={5} client:load />
+
+</details>
+
+### Challenge 2: High-Risk Sectors
+<span class="px-2 py-1 text-xs bg-green-900 text-green-200 border border-green-700 rounded font-mono">CLEARANCE: CADET</span>
+
+**Objective:** Find the 5 most recent successful logins from any user *except* "jadenman".
+
+> **Hint:** Use `!=`, `sort by`, and `take`.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| where username != "jadenman" and result == "Successful Login"
+| sort by timestamp desc
+| take 5`} runFuelCost={5} client:load />
+
+</details>
+
+### Challenge 3: Crew Manifest
+<span class="px-2 py-1 text-xs bg-green-900 text-green-200 border border-green-700 rounded font-mono">CLEARANCE: CADET</span>
+
+**Objective:** Find the role of the user "jadenman" in the `Employees` table.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`Employees
+| where username == "jadenman"
+| project role`} runFuelCost={5} client:load />
+
+**Expected Results:**
+
+| role |
+| :--- |
+| IT associate |
+
+</details>
+

@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon';
+import SkillConstellation from '../components/SkillConstellation';
+import ObservatoryGreeting from '../components/ObservatoryGreeting';
+import ResearchLog from '../components/ResearchLog';
+import ResourceGrid from '../components/ResourceGrid';
+import GlobalKnowledgeSync from '../components/GlobalKnowledgeSync';
+import EarnedPatches from '../components/EarnedPatches';
+import EarnedAchievements from '../components/EarnedAchievements';
+import ObservatoryWalkthrough from '../components/ObservatoryWalkthrough';
+
+const allDocs = await getCollection('docs');
+const playableDocs = allDocs.filter(doc => 
+  doc.slug.startsWith('mission-00/') || 
+  doc.slug.startsWith('mission-01/') || 
+  doc.slug.startsWith('mission-02/') || 
+  doc.slug.startsWith('mission-03/')
+);
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<Layout title="The Data Observatory">
+  <main class="flex-1 overflow-y-auto">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <ObservatoryWalkthrough client:only="react" />
+      <ObservatoryGreeting client:only="react" />
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content Area -->
+        <div class="lg:col-span-2 space-y-8">
+          
+          <!-- Global Sync Bar -->
+          <GlobalKnowledgeSync client:only="react" totalSectors={playableDocs.length} />
+
+          <!-- Skill Constellation -->
+          <section data-tour="observatory-skill">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-white flex items-center">
+                <Icon name="analytics" className="w-5 h-5 mr-2 text-nebula-400" client:load />
+                SKILL CONSTELLATIONS
+              </h2>
+              <span class="text-xs font-mono text-slate-500">VISUALIZATION MODE: ACTIVE</span>
+            </div>
+            <SkillConstellation client:load />
+          </section>
+
+          <!-- Resources Grid -->
+          <ResourceGrid client:only="react" totalSectors={playableDocs.length} baseUrl={base} />
+        </div>
+
+        <!-- Sidebar: Research Log & Patches -->
+        <aside class="space-y-8">
+          <!-- Research Log -->
+          <div class="bg-space-900 border border-space-700 rounded-xl p-6" data-tour="observatory-log">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-widest mb-4 border-b border-space-700 pb-2">
+              Research Log
+            </h3>
+            <ResearchLog client:only="react" allDocs={allDocs} baseUrl={base} />
+          </div>
+
+          <!-- Patches -->
+          <div class="bg-space-900 border border-space-700 rounded-xl p-6" data-tour="observatory-patches">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-widest mb-4 border-b border-space-700 pb-2">
+              Earned Patches
+            </h3>
+            <EarnedPatches client:only="react" />
+          </div>
+
+          <!-- Achievements -->
+          <div class="bg-space-900 border border-space-700 rounded-xl p-6" data-tour="observatory-achievements">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-widest mb-4 border-b border-space-700 pb-2">
+              Achievements
+            </h3>
+            <EarnedAchievements client:only="react" />
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</Layout>

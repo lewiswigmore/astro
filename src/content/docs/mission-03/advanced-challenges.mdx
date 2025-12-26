@@ -1,0 +1,123 @@
+---
+title: "Deep Space Challenges"
+description: "Advanced practical exercises for veteran pilots"
+order: 5
+reward: 75
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+The gravity is stronger here. Only the most skilled pilots will survive these deep space anomalies.
+
+### Challenge 1: The Security Breach
+<span class="px-2 py-1 text-xs bg-green-900 text-green-200 border border-green-700 rounded font-mono">CLEARANCE: CADET</span>
+
+**Objective:** Find the top 3 users with the most failed logins.
+
+> **Hint:** Use `summarize count()` and `sort`.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| where result == "Failed Login"
+| summarize count() by username
+| sort by count_ desc
+| take 3`} runFuelCost={5} client:load />
+
+**Expected Results:**
+
+| username | count_ |
+| :--- | :--- |
+| jadenman | 22 |
+| rocampbell | 21 |
+| docannon | 20 |
+
+</details>
+
+### Challenge 2: Network Anomalies
+<span class="px-2 py-1 text-xs bg-green-900 text-green-200 border border-green-700 rounded font-mono">CLEARANCE: CADET</span>
+
+**Objective:** Find the top 10 IP addresses with the most authentication attempts.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| summarize Attempts = count() by src_ip
+| top 10 by Attempts desc`} runFuelCost={5} client:load />
+
+</details>
+
+### Challenge 3: The Insider Threat
+<span class="px-2 py-1 text-xs bg-yellow-900 text-yellow-200 border border-yellow-700 rounded font-mono">CLEARANCE: PILOT</span>
+
+**Objective:** Find the top 10 users with the most failed logins and show their full name and role.
+
+> **Hint:** You will need to dock (`join`) with the `Employees` table.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| where result == "Failed Login"
+| summarize FailedAttempts = count() by username
+| top 10 by FailedAttempts desc
+| join kind=inner (Employees) on username
+| project name, role, FailedAttempts`} runFuelCost={5} client:load />
+
+</details>
+
+### Challenge 4: Temporal Extremes
+<span class="px-2 py-1 text-xs bg-red-900 text-red-200 border border-red-700 rounded font-mono">CLEARANCE: COMMANDER</span>
+
+**Objective:** Find the earliest and latest authentication event for each user.
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`AuthenticationEvents
+| summarize 
+    earliest_event_timestamp = arg_min(timestamp, timestamp), 
+    latest_event_timestamp = arg_max(timestamp, timestamp) 
+    by username
+| project username, earliest_event_timestamp, latest_event_timestamp
+| take 10`} runFuelCost={5} client:load />
+
+</details>
+
+### Challenge 5: The Double Agent
+<span class="px-2 py-1 text-xs bg-red-900 text-red-200 border border-red-700 rounded font-mono">CLEARANCE: COMMANDER</span>
+
+**Objective:** Find the user with successful logins from **China** who also has successful logins from **Russia**.
+
+> **Hint:** Use `geo_info_from_ip_address()` and `join` (or `in`).
+
+<details>
+<summary className="cursor-pointer bg-space-800 border border-space-700 text-thrust-400 px-6 py-2 rounded hover:bg-space-700 transition-colors duration-200 font-mono text-sm inline-block mt-4">DECRYPT SOLUTION</summary>
+
+<Holodeck initialCode={`let ChinaLogins = AuthenticationEvents
+| where isnotempty(src_ip)
+    and result == "Successful Login"
+    and not(ipv4_is_private(src_ip))
+| extend Location = geo_info_from_ip_address(src_ip)
+| where Location contains "China"
+| distinct username;
+let RussiaLogins = AuthenticationEvents
+| where isnotempty(src_ip)
+    and result == "Successful Login"
+    and not(ipv4_is_private(src_ip))
+| extend Location = geo_info_from_ip_address(src_ip)
+| where Location contains "Russia"
+| distinct username;
+ChinaLogins
+| join kind=inner (RussiaLogins) on username
+| project username`} runFuelCost={5} client:load />
+
+**Expected Results:**
+
+| username |
+| :--- |
+| dukilcoyne |
+
+</details>

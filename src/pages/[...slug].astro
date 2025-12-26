@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import MissionNavigation from '../components/MissionNavigation';
+import SidebarProfile from '../components/SidebarProfile';
+import SaveToLogButton from '../components/SaveToLogButton';
+import MissionStatusBadge from '../components/MissionStatusBadge';
+import AutoSync from '../components/AutoSync';
+import Mission00Walkthrough from '../components/Mission00Walkthrough';
+
+export async function getStaticPaths() {
+  const docsEntries = await getCollection('docs');
+  return docsEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Get all docs for the sidebar
+const allDocs = await getCollection('docs');
+const playableDocs = allDocs.filter(doc => 
+  doc.slug.startsWith('mission-00/') || 
+  doc.slug.startsWith('mission-01/') || 
+  doc.slug.startsWith('mission-02/') || 
+  doc.slug.startsWith('mission-03/')
+);
+
+const missionPrefix = entry.slug.split('/')[0];
+const missionDocs = allDocs
+  .filter(doc => doc.slug.startsWith(`${missionPrefix}/`))
+  .sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+// Find current index for next/prev navigation
+const currentIndex = missionDocs.findIndex(doc => doc.slug === entry.slug);
+const prevDoc = currentIndex > 0 ? missionDocs[currentIndex - 1] : null;
+const nextDoc = currentIndex < missionDocs.length - 1 ? missionDocs[currentIndex + 1] : null;
+
+const prevNav = prevDoc ? { slug: prevDoc.slug, title: prevDoc.data.title } : null;
+const nextNav = nextDoc ? { slug: nextDoc.slug, title: nextDoc.data.title } : null;
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+---
+
+<Layout title={entry.data.title}>
+  <AutoSync client:only="react" slug={entry.slug} />
+  <Mission00Walkthrough client:only="react" slug={entry.slug} />
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar (Simplified) -->
+    <aside class="w-64 bg-space-900 border-r border-space-700 p-4 overflow-y-auto hidden md:block" data-tour="mission-sidebar">
+      <nav>
+        <a href={base} data-astro-reload class="block mb-6 text-thrust-400 font-mono font-bold hover:text-thrust-300 transition-colors">
+          &lt; RETURN TO HANGAR
+        </a>
+        
+        <SidebarProfile client:only="react" totalSectors={playableDocs.length} />
+
+        <div class="mb-6" data-tour="mission-sidebar-log">
+          <h3 class="font-mono text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Mission Log // {missionPrefix.replace('-', ' ').toUpperCase()}</h3>
+          <ul class="space-y-1" data-tour="mission-sidebar-submissions">
+            {missionDocs.map((doc) => (
+              <li>
+                <a 
+                  href={`${base}${doc.slug}`} 
+                  data-astro-reload
+                  class:list={[
+                    "flex items-center justify-between px-3 py-2 rounded border text-sm transition-all font-mono",
+                    entry.slug === doc.slug 
+                      ? "bg-nebula-500/10 border-nebula-500 text-nebula-400" 
+                      : "border-transparent hover:border-nebula-500/50 hover:bg-space-800 text-slate-300"
+                  ]}
+                >
+                  <span class="truncate">
+                    {doc.data.order !== undefined ? `0${doc.data.order}. ` : ''}{doc.data.title}
+                  </span>
+                  <MissionStatusBadge client:only="react" slug={doc.slug} type="sidebar" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto bg-space-black scroll-smooth">
+      <article class="prose prose-invert max-w-4xl mx-auto prose-headings:font-mono prose-headings:text-white prose-p:text-slate-300 prose-a:text-thrust-400 prose-code:text-nebula-400 prose-pre:bg-space-900 prose-pre:border prose-pre:border-space-700">
+        <div class="flex items-start justify-between mb-8">
+            <h1 class="font-mono text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 m-0">{entry.data.title}</h1>
+            <SaveToLogButton 
+              client:only="react" 
+              slug={entry.slug} 
+              reward={entry.data.reward ?? 10} 
+            />
+        </div>
+        <Content />
+        
+        <!-- Navigation Footer -->
+        <MissionNavigation 
+          client:only="react" 
+          prev={prevNav} 
+          next={nextNav} 
+          currentTitle={entry.data.title}
+          currentSlug={entry.slug}
+          baseUrl={base}
+        />
+      </article>
+    </main>
+  </div>
+</Layout>

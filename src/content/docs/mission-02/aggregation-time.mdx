@@ -1,0 +1,53 @@
+---
+title: "Time Warps & Aggregation"
+description: "Summarize data and work with time series"
+order: 4
+reward: 20
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+Raw data is just stardust. To see the constellations, you must aggregate the data.
+
+### 1. The Aggregator (`summarize`)
+
+The `summarize` operator is your primary tool for condensing data. It takes a stream of records and produces a summary based on an aggregation function.
+
+*   `count()`: Counts the number of records.
+*   `dcount()`: Counts the number of unique (distinct) values.
+*   `sum()`: Adds up numerical values.
+*   `avg()`: Calculates the average.
+
+<Holodeck initialCode={`// Count total login attempts by result
+AuthenticationEvents
+| summarize count() by result`} runFuelCost={5} client:load />
+
+### 2. Time Buckets (`bin`)
+
+The `bin()` function is your time warp. It groups events into fixed intervals (hours, days). Combined with `summarize` and `render`, it allows you to visualize the flow of time.
+
+<Holodeck initialCode={`AuthenticationEvents
+| extend timestamp = todatetime(timestamp)
+| summarize count() by result, bin(timestamp, 1h)
+| render timechart`} runFuelCost={5} client:load />
+
+### 3. Finding the Extremes (`arg_max` & `arg_min`)
+
+Sometimes you need to find the first or last contact. `arg_max()` and `arg_min()` are your scanners for these extremes.
+
+<Holodeck initialCode={`// Find the earliest and latest authentication event for each user
+AuthenticationEvents
+| extend timestamp = todatetime(timestamp)
+| summarize 
+    earliest_event_timestamp = arg_min(timestamp, timestamp), 
+    latest_event_timestamp = arg_max(timestamp, timestamp) 
+    by username
+| take 10`} runFuelCost={5} client:load />
+
+### 4. Source Analysis
+
+By summarizing data by IP address, we can identify high-traffic sectors or anomalous signals.
+
+<Holodeck initialCode={`AuthenticationEvents
+| summarize Attempts = count() by src_ip
+| top 10 by Attempts desc`} runFuelCost={5} client:load />

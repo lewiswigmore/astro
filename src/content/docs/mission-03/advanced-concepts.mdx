@@ -1,0 +1,57 @@
+---
+title: "Deep Space Tactics"
+description: "Variables and in-memory tables"
+order: 4
+reward: 30
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+To survive in deep space, you need advanced tactics.
+
+### 1. Defining Variables (`let`)
+
+The `let` statement allows you to store a query result or a value in a variable. This makes your navigation logs cleaner and easier to read.
+
+<Holodeck initialCode={`// Find the role of the user with the most failed logins
+let FailedLogins = AuthenticationEvents
+| where result == "Failed Login"
+| summarize count() by username
+| top 1 by count_;
+// Now join that result to the Employees table
+FailedLogins
+| join kind=inner Employees on username
+| project name, role, FailedLoginCount = count_`} runFuelCost={5} client:load />
+
+### 2. Synthetic Data (`datatable`)
+
+Sometimes you need to create your own data on the fly. `datatable` lets you build a temporary table in memory.
+
+<Holodeck initialCode={`let T = datatable(src_ip: string) [
+    '58.128.200.24',
+    '106.110.117.45',
+    '113.224.96.5'
+];
+AuthenticationEvents
+| where src_ip in (T)`} runFuelCost={5} client:load />
+
+### 3. Caching (`materialize`)
+
+When running complex simulations, you don't want to recalculate the same trajectory twice. `materialize` caches the result of a sub-query so you can reuse it instantly.
+
+<Holodeck initialCode={`let FailedLoginData = materialize (
+    AuthenticationEvents
+    | where result == "Failed Login"
+    | extend timestamp = todatetime(timestamp)
+);
+// Example 1: Count of failed logins per user
+FailedLoginData
+| summarize FailedCount = count() by username;
+// Example 2: Top 5 source IPs causing failed logins
+FailedLoginData
+| summarize FailedAttempts = count() by src_ip
+| top 5 by FailedAttempts desc;
+// Example 3: Time series of failed logins
+FailedLoginData
+| summarize Count = count() by bin(timestamp, 1h)
+| render timechart`} runFuelCost={5} client:load />

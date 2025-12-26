@@ -1,0 +1,46 @@
+---
+title: "Navigation Filters"
+description: "Using where, project, and extend operators"
+order: 4
+reward: 15
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+Space is vast and full of noise. To find the signal, you must learn to filter your sensor feeds.
+
+### 1. Locking on Target (`where`)
+
+The `where` operator acts as your primary navigation filter. It discards any data that doesn't match your criteria.
+
+<Holodeck initialCode={`AuthenticationEvents
+| where result == "Failed Login"
+| take 10`} runFuelCost={5} client:load />
+
+### 2. Reconfiguring the HUD (`project` & `extend`)
+
+*   **`project`**: Selects specific columns to display on your HUD.
+*   **`extend`**: Calculates new data and adds it to your display without removing existing data.
+
+<Holodeck initialCode={`AuthenticationEvents
+| extend event_type = "Login Attempt"
+| project timestamp, event_type, username, result
+| take 10`} runFuelCost={5} client:load />
+
+### 3. Identifying Unique Signals (`distinct`)
+
+The `distinct` operator removes duplicate records, showing you only the unique values in a column.
+
+<Holodeck initialCode={`// List all unique usernames that have attempted to login
+AuthenticationEvents
+| distinct username`} runFuelCost={5} client:load />
+
+### 4. Prioritizing Data (`sort` & `top`)
+
+*   **`sort by`**: Reorders your data (default is descending).
+*   **`top`**: A shortcut that sorts and takes the first N records in one maneuver.
+
+<Holodeck initialCode={`// Find the most recent login attempts
+AuthenticationEvents
+| sort by timestamp desc
+| take 10`} runFuelCost={5} client:load />

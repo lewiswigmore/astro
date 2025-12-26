@@ -1,0 +1,38 @@
+---
+title: "Docking Procedures"
+description: "Combine data from multiple tables"
+order: 2
+reward: 20
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+Sometimes the data you need is scattered across different ships. To get the full picture, you must initiate a docking procedure (Join).
+
+### 1. The Docking Maneuver (`join`)
+
+The `join` operator merges two data streams based on a shared signal (key).
+
+<Holodeck initialCode={`// Find IT associate employees with failed logins
+AuthenticationEvents
+| where result == "Failed Login"
+| join kind=inner (
+    Employees
+    | where role == "IT associate"
+) on username
+| project timestamp, employee_name = name`} runFuelCost={5} client:load />
+
+### 2. Docking Configurations (Join Kinds)
+
+*   **`inner`**: Hard Dock. Only returns data if a match is found on both ships.
+*   **`leftouter`**: Soft Dock. Keeps all data from your ship (left), and attaches data from the other ship (right) if available.
+*   **`anti`**: Repel. Returns data from your ship that *does not* match the other ship.
+
+<Holodeck initialCode={`// Example: Find users with failed logins and their employee details
+// Using leftouter to include all failed logins, even for non-employees
+AuthenticationEvents
+| where result == "Failed Login"
+| summarize FailedAttempts = count() by username
+| join kind=leftouter (Employees) on username
+| project username, name, role, FailedAttempts
+| top 10 by FailedAttempts desc`} runFuelCost={5} client:load />

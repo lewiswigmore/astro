@@ -1,0 +1,49 @@
+---
+title: "Temporal Navigation"
+description: "Mastering time filters and the ago() function"
+order: 3
+reward: 15
+---
+
+import Holodeck from '../../../components/Holodeck';
+
+In the Kusto Nebula, time is the most important dimension. Almost every data stream is indexed by a timestamp.
+
+### 1. The Golden Rule of KQL
+
+**PILOT TIP:** Always filter by time first. The Kusto engine is optimized for temporal navigation. Filtering by time early reduces the "gravitational drag" on your query, making it run significantly faster.
+
+### 2. The Historical Archive
+
+**CRITICAL INTEL:** The telemetry logs in the `help` cluster are a historical archive from **early 2022**. 
+
+Additionally, in this specific dataset, the `timestamp` field is stored as a **string**. To perform temporal maneuvers, you must first convert it to a **datetime** type using the `todatetime()` function.
+
+### 3. Absolute Time (`datetime`)
+
+To jump to a specific point in history, use the `datetime()` function. Note how we use `extend` to re-cast the timestamp before filtering.
+
+<Holodeck initialCode={`// Scan for events on a specific date in the archive
+AuthenticationEvents
+| extend timestamp = todatetime(timestamp)
+| where timestamp >= datetime(2022-01-01) and timestamp <= datetime(2022-01-07)
+| take 10`} runFuelCost={5} client:load />
+
+### 4. Time Ranges (`between`)
+
+The `between` operator is the most elegant way to specify a start and end point in the historical logs.
+
+<Holodeck initialCode={`// A more elegant way to scan a specific window in 2022
+AuthenticationEvents
+| extend timestamp = todatetime(timestamp)
+| where timestamp between (datetime(2022-01-01) .. datetime(2022-01-07))
+| count`} runFuelCost={5} client:load />
+
+### 5. Future Comms (`ago`)
+
+In a live production environment (like a real ship's bridge), you will use the `ago()` function constantly to look back from the current moment.
+
+*   `ago(1h)`: Last hour
+*   `ago(7d)`: Last 7 days
+
+> **Note:** While `ago()` is essential for real-time monitoring, it remains offline for this specific historical training exercise.

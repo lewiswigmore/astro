@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#cbd5e1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f1f5f9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#94a3b8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="noseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0891b2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0e7490;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="flameGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:0.8" />
+    </linearGradient>
+    <radialGradient id="windowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6d28d9;stop-opacity:1" />
+    </radialGradient>
+    <linearGradient id="circleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leftFinGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#64748b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#94a3b8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rightFinGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#64748b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="frontFinGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#cbd5e1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#94a3b8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <circle cx="50" cy="50" r="45" fill="#0B0C15" stroke="url(#circleGrad)" stroke-width="5"/>
+  
+  <!-- Rocket nose with smooth curve -->
+  <path d="M50 15 Q62 20 62 35 H38 Q38 20 50 15 Z" fill="url(#noseGrad)"/>
+  
+  <!-- Body to nose connection line -->
+  <line x1="38" y1="35" x2="62" y2="35" stroke="#64748b" stroke-width="1.5"/>
+  
+  <!-- Rocket body -->
+  <rect x="38" y="35" width="24" height="38" fill="url(#bodyGrad)"/>
+  
+  <!-- Body highlight for metallic shine -->
+  <rect x="43" y="35" width="2" height="38" fill="#ffffff" opacity="0.25"/>
+  
+  <!-- Left fin -->
+  <path d="M38 60L28 70L38 68Z" fill="url(#leftFinGrad)"/>
+  
+  <!-- Right fin -->
+  <path d="M62 60L72 70L62 68Z" fill="url(#rightFinGrad)"/>
+  
+  <!-- Front fin (center) -->
+  <rect x="49" y="60" width="2" height="10" fill="url(#frontFinGrad)"/>
+  
+  <!-- Body to flame connection line -->
+  <line x1="38" y1="73" x2="62" y2="73" stroke="#64748b" stroke-width="1.5"/>
+  
+  <!-- Window outer border with depth -->
+  <circle cx="50" cy="48" r="7.5" fill="#6d28d9" opacity="0.5"/>
+  <circle cx="50" cy="48" r="6.5" fill="#1e1b4b"/>
+  
+  <!-- Window -->
+  <circle cx="50" cy="48" r="5.5" fill="url(#windowGrad)"/>
+  
+  <!-- Window shine reflection -->
+  <circle cx="48" cy="46" r="2" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Flame -->
+  <path d="M38 73L32 85L38 80L44 88L50 78L56 88L62 80L68 85L62 73Z" fill="url(#flameGrad)"/>
+</svg>

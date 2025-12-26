@@ -1,0 +1,103 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-space-black: #030014;
+  --color-space-900: #0B0C15;
+  --color-space-800: #15192b;
+  --color-space-700: #232942;
+  
+  --color-nebula-500: #8b5cf6;
+  --color-nebula-400: #a78bfa;
+  
+  --color-thrust-500: #06b6d4;
+  --color-thrust-400: #22d3ee;
+  
+  --color-stardust: #fbbf24;
+  
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+  }
+  --animate-shake: shake 0.2s ease-in-out 2;
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  --animate-pop: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@layer base {
+  body {
+    @apply bg-space-black text-slate-200 font-mono;
+  }
+
+  /* Themed scrollbars (Firefox + WebKit) */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-space-700) var(--color-space-900);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-space-700) var(--color-space-900);
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--color-space-900);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-space-700);
+    border-radius: 999px;
+    border: 2px solid var(--color-space-900);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-nebula-500);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: var(--color-space-900);
+  }
+
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-white tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+  
+  .border-glow {
+    box-shadow: 0 0 10px currentColor;
+  }
+
+  /* Mission Control card: completed state (subdued/greyed out) */
+  [data-mission-complete="true"] {
+    opacity: 0.72;
+    filter: grayscale(0.55) saturate(0.6) brightness(0.92);
+  }
+
+  [data-mission-complete="true"] .group-hover\:opacity-100 {
+    opacity: 0.35 !important;
+  }
+
+  [data-mission-complete="true"] .hover\:bg-space-800:hover {
+    background-color: var(--color-space-900) !important;
+  }
+}

@@ -1,0 +1,58 @@
+---
+title: "Station Tour"
+description: "What each area is for, and how to move fast without jank"
+order: 3
+reward: 5
+---
+
+import SkillConstellation from '../../../components/SkillConstellation';
+
+The Academy is divided into two primary operational stations.
+
+## Command Center
+
+The **Cockpit** is your central launchpad and command center:
+
+-   **Pilot Card:** Monitor your level, rank and total Stardust.
+-   **Status Indicators:** Track your **Daily Streak** and **Activity** grid to maintain momentum.
+-   **Mission Control:** Select your next training objective.
+
+## Research Deck
+
+The **Observatory** is your dedicated study bay and research deck:
+
+-   **Mission Logs:** Access detailed lessons and documentation.
+-   **Holodeck Simulations:** Preview KQL within the logs to prepare your **Uplink** (no live execution).
+-   **Skill Constellations:** Visualize your progression through the KQL mastery tree.
+
+<SkillConstellation 
+  client:load 
+  title="ORIENTATION"
+  currentNode="mission-00/platform-tour"
+  skills={[
+    { id: 'intro', label: 'ORIENTATION', slug: 'mission-00/introduction', x: '15%', y: '40%' },
+    { id: 'uplink', label: 'UPLINK', slug: 'mission-00/help-cluster', x: '35%', y: '60%' },
+    { id: 'tour', label: 'STATION TOUR', slug: 'mission-00/platform-tour', x: '55%', y: '35%' },
+    { id: 'profile', label: 'PROTOCOLS', slug: 'mission-00/profile-and-storage', x: '75%', y: '55%' },
+    { id: 'stardust', label: 'STARDUST', slug: 'mission-00/stardust', x: '90%', y: '30%' },
+    { id: 'dummy-3', label: 'DATA VAULT', slug: 'dummy-3', x: '70%', y: '15%' },
+    { id: 'dummy-4', label: 'NEBULA GATE', slug: 'dummy-4', x: '85%', y: '75%' },
+  ]}
+  connections={[
+    { from: 'intro', to: 'uplink' },
+    { from: 'uplink', to: 'tour' },
+    { from: 'tour', to: 'profile' },
+    { from: 'profile', to: 'stardust' },
+    { from: 'tour', to: 'dummy-3' },
+    { from: 'profile', to: 'dummy-4' },
+  ]}
+  forceCompleted={['mission-00/introduction', 'mission-00/help-cluster']}
+/>
+
+-   **Research Log:** Access your bookmarked sectors and saved research notes.
+-   **Patches & Achievements:** Review your earned honors and mission milestones.
+
+---
+
+**Status:** Station Tour Complete.
+**Next Objective:** Pilot Profile Protocols.

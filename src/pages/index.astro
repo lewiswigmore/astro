@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon';
+import OnboardingManager from '../components/OnboardingManager';
+import CockpitWalkthrough from '../components/CockpitWalkthrough';
+import HeroDashboard from '../components/HeroDashboard';
+import DailyStreakCard from '../components/DailyStreakCard';
+import DailyStreakGrid from '../components/DailyStreakGrid';
+import MissionProgressBadge from '../components/MissionProgressBadge';
+import MissionCardDecorator from '../components/MissionCardDecorator';
+import MissionCarousel from '../components/MissionCarousel';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const allDocs = await getCollection('docs');
+const getSectorCount = (id: string) => allDocs.filter(doc => doc.slug.startsWith(`${id}/`)).length;
+
+const missions = [
+	{
+		id: 'mission-00',
+		title: 'MISSION 00',
+		subtitle: 'ORIENTATION',
+		description: "Begin your orientation at the Observatory. Learn about the Help Cluster, Stardust progression, and how your pilot profile is secured in the local databanks.",
+		icon: 'astro',
+		gradient: 'from-thrust-500 to-stardust',
+		totalSectors: getSectorCount('mission-00'),
+		href: `${base}mission-00/introduction`,
+		buttonText: 'BEGIN ORIENTATION',
+		buttonColor: 'text-thrust-400'
+	},
+	{
+		id: 'mission-01',
+		title: 'MISSION 01',
+		subtitle: 'FUNDAMENTALS',
+		description: "Initialize your KQL sensors. Master core syntax, logical operators, and data filtering using real-world security telemetry.",
+		icon: 'analytics',
+		iconColor: 'text-nebula-400',
+		gradient: 'from-nebula-500 to-thrust-500',
+		totalSectors: getSectorCount('mission-01'),
+		href: `${base}mission-01/introduction`,
+		buttonText: 'INITIATE LAUNCH SEQUENCE',
+		buttonColor: 'text-nebula-400'
+	},
+	{
+		id: 'mission-02',
+		title: 'MISSION 02',
+		subtitle: 'ADVANCED TACTICS',
+		description: "Master temporal navigation and data aggregation. Learn to scan frequencies and track threats across time-series data.",
+		icon: 'monitor',
+		iconColor: 'text-purple-400',
+		gradient: 'from-purple-500 to-nebula-500',
+		totalSectors: getSectorCount('mission-02'),
+		href: `${base}mission-02/introduction`,
+		buttonText: 'ENGAGE ADVANCED SYSTEMS',
+		buttonColor: 'text-purple-400'
+	},
+	{
+		id: 'mission-03',
+		title: 'MISSION 03',
+		subtitle: 'DEEP SPACE OPS',
+		description: "The final frontier. Master multi-table joins, variables, and complex logic to become a KQL Commander.",
+		icon: 'storage',
+		iconColor: 'text-red-400',
+		gradient: 'from-red-500 to-purple-500',
+		totalSectors: getSectorCount('mission-03'),
+		href: `${base}mission-03/introduction`,
+		buttonText: 'INITIATE COMMAND SEQUENCE',
+		buttonColor: 'text-red-400'
+	},
+	{
+		id: 'mission-04',
+		title: 'MISSION 04',
+		subtitle: 'SECRET OPS',
+		description: "Classified operations. Master advanced security patterns and hidden telemetry streams.",
+		icon: 'shield',
+		iconColor: 'text-orange-400',
+		gradient: 'from-orange-500 to-red-500',
+		totalSectors: getSectorCount('mission-04'),
+		href: `${base}mission-04/introduction`,
+		buttonText: 'ACCESS CLASSIFIED',
+		buttonColor: 'text-orange-400',
+		inDevelopment: true
+	}
+];
+---
+
+<Layout title="Mission Control">
+	<OnboardingManager client:only="react" />
+	<CockpitWalkthrough client:only="react" />
+	
+	<main class="flex-1 overflow-y-auto relative z-10">
+		<div class="container mx-auto px-4 py-12">
+			<!-- Hero Dashboard -->
+			<HeroDashboard client:only="react" />
+
+			<!-- Daily Streak + Activity Grid -->
+			<div class="grid gap-6 lg:grid-cols-2 mb-12 items-stretch h-[280px]">
+				<DailyStreakCard client:only="react" />
+				<DailyStreakGrid client:only="react" />
+			</div>
+
+			<div id="mission-control" data-tour="mission-control" class="text-center mb-2 scroll-mt-24">
+				<h2 class="text-3xl font-bold text-white mb-2">Mission Control</h2>
+				<p class="text-slate-400 font-mono text-sm">Select your training mission</p>
+			</div>
+
+			<MissionCarousel client:only="react" missions={missions} baseUrl={base} />
+		</div>
+	</main>
+</Layout>
