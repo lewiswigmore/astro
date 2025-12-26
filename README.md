@@ -2,6 +2,9 @@
 
 > A gamified, interactive platform for learning Kusto Query Language (KQL).
 
+[![Deploy to GitHub Pages](https://github.com/lewiswigmore/astro/actions/workflows/deploy.yml/badge.svg)](https://github.com/lewiswigmore/astro/actions/workflows/deploy.yml)
+[![Live Site](https://img.shields.io/badge/Live_Site-lewiswigmore.github.io/astro-blue?style=flat-square&logo=github)](https://lewiswigmore.github.io/astro/)
+
 ![Mission Control](public/mission-control-preview.png)
 
 ## About The Project
