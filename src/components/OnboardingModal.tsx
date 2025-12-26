@@ -64,6 +64,50 @@ const OnboardingModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
+  const getIntroContent = () => {
+    switch (prefix) {
+      case 'COMMANDER':
+        return {
+          status: '[ SIGNAL LOCKED. CALIBRATING INSTRUMENTS... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // Calibration Done ]`,
+          text: <>You are now operating <span className="text-nebula-400 font-bold">Astro</span>. From this terminal, you will command the flow of data. Prepare for navigating the cosmos.</>
+        };
+      case 'CADET':
+        return {
+          status: '[ BIOMETRICS CONFIRMED. LINKING TO DATA STREAM... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // Signing Bonus ]`,
+          text: <>Welcome aboard <span className="text-nebula-400 font-bold">Astro</span>. You are now connected to the universal log stream. Your objective is to filter the cosmic noise and discover hidden signals.</>
+        };
+      case 'SPECIALIST':
+        return {
+          status: '[ CLEARANCE LEVEL: GRANTED. INITIALIZING HUD... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // Rank Established ]`,
+          text: <>You stand on the bridge of <span className="text-nebula-400 font-bold">Astro</span>, the ultimate Kusto interceptor. We hunt data down at lightspeed. Prepare for query injection.</>
+        };
+      case 'ANALYST':
+        return {
+          status: '[ AUTHENTICATION SUCCESS. DECRYPTING ARCHIVES... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // Access Granted ]`,
+          text: <><span className="text-nebula-400 font-bold">Astro</span> is online. You are now part of an elite crew decoding the language of the cosmos. Every query you write illuminates the dark sectors of the cloud.</>
+        };
+      case 'OPERATOR':
+        return {
+          status: '[ PROTOCOL INITIATED. WELCOME, TRAVELER... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // New Account Credit ]`,
+          text: <><span className="text-nebula-400 font-bold">Astro</span> awaits your command. We are drifting in a sea of unstructured data. Your mission is to bring order to the galaxy, one operator at a time.</>
+        };
+      case 'PILOT':
+      default:
+        return {
+          status: '[ PILOT RECOGNIZED. ENGAGING WARP DRIVE... ]',
+          reward: `[ +${INITIAL_STARDUST} STARDUST AWARDED // Pre-flight Complete ]`,
+          text: <>Welcome to the cockpit of <span className="text-nebula-400 font-bold">Astro</span>. Here, syntax is your fuel and logic is your navigation. Let's create a map of the universe.</>
+        };
+    }
+  };
+
+  const introContent = getIntroContent();
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
       <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border border-nebula-500 bg-space-900 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
@@ -155,9 +199,9 @@ const OnboardingModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
                 </div>
               </div>
               <p className="text-lg leading-relaxed text-slate-300">
-                <span className="font-mono text-green-400 text-sm block mb-2">[ IDENTITY VERIFIED. ACCESSING KQL NEBULA... ]</span>
-                <span className="font-mono text-stardust text-sm block mb-4 animate-pulse">[ +{INITIAL_STARDUST} STARDUST AWARDED // Identity Registration Complete ]</span>
-                You’ve just boarded <span className="text-nebula-400 font-bold">Astro</span>, the galaxy’s fastest KQL learning vessel. Our mission is to turn raw telemetry into stellar insights.
+                <span className="font-mono text-green-400 text-sm block mb-2">{introContent.status}</span>
+                <span className="font-mono text-stardust text-sm block mb-4 animate-pulse">{introContent.reward}</span>
+                {introContent.text}
               </p>
               <p className="text-lg font-bold text-white">
                 Are you ready to break atmosphere?
