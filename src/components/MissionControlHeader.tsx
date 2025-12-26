@@ -159,7 +159,7 @@ export const MissionControlHeader = ({ docs = [] }: MissionControlHeaderProps) =
         <button
           onClick={() => setIsSearchOpen(true)}
           className="text-slate-500 hover:text-thrust-400 transition-colors"
-          title="Search Missions (⌘K)"
+          title="Search Missions (Ctrl+K)"
           data-tour="search-button"
         >
           <Icon name="search" className="w-4 h-4" />

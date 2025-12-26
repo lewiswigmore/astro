@@ -37,7 +37,7 @@ const CockpitWalkthrough = () => {
         selector: '[data-tour="search-button"]',
         title: 'Global Search',
         body:
-          'Need to find a specific topic or mission? Use the search tool (or press ⌘K) to scan the entire Academy database.',
+          'Need to find a specific topic or mission? Use the search tool (or press Ctrl+K) to scan the entire Academy database.',
       },
       {
         id: 'rank-level',
