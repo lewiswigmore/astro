@@ -8,9 +8,9 @@
 
 ## About The Project
 
-This project is a static web application built with **Astro** and **React** that teaches users how to write KQL queries through a series of narrative-driven "Space Missions".
+This project is a static web application built with **Astro** and **React** that teaches users how to learn Kusto.
 
-Users take on the role of a data detective in a sci-fi setting, using real KQL queries to solve puzzles, analyze logs, and uncover mysteries.
+Users take on the role of a pilot in Astro world, using real KQL queries to analyse logs and solve puzzles while earning rewards along the way.
 
 ## Features
 
@@ -50,7 +50,7 @@ To run this project locally:
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community a great place to learn. Any contributions you make are greatly appreciated.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions on how to add new missions or features.
 
