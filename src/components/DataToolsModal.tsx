@@ -53,7 +53,7 @@ const DataToolsModal = ({ isOpen, onClose }: DataToolsModalProps) => {
   const [countdown, setCountdown] = useState(3);
 
   const filename = useMemo(() => `astro_pilot_profile_${toDateStamp()}.json`, []);
-  const importExportEnabled = false;
+  const importExportEnabled = true;
 
   useEffect(() => {
     const handleTriggerReset = () => {
@@ -318,16 +318,10 @@ const DataToolsModal = ({ isOpen, onClose }: DataToolsModalProps) => {
             </div>
 
             <div className="rounded-lg border border-space-700 bg-space-800/50 p-4">
-              <div className="text-xs font-mono text-slate-500 uppercase tracking-widest">Backup</div>
+              <div className="text-xs font-mono text-slate-500 uppercase tracking-widest">Backup & Restore</div>
               <div className="text-[10px] font-mono text-slate-500 mt-1">
-                Export your profile now; import later (future cloud sync).
+                Save your progress to a file or restore from a backup.
               </div>
-
-              {!importExportEnabled && (
-                <div className="mt-2 text-[10px] font-mono text-slate-600 uppercase tracking-widest">
-                  Import/Export: coming soon
-                </div>
-              )}
 
               <div className="mt-3 flex gap-2">
                 <button
@@ -370,10 +364,6 @@ const DataToolsModal = ({ isOpen, onClose }: DataToolsModalProps) => {
             </div>
 
             {message && <div className="text-[10px] font-mono text-slate-400">{message}</div>}
-
-            <div className="text-[10px] font-mono text-slate-600">
-              Note: Import/Export will be enabled in a future update.
-            </div>
           </div>
         </div>
       </div>
