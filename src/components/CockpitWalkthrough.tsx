@@ -30,7 +30,7 @@ const CockpitWalkthrough = () => {
         selector: '[data-tour="settings-button"]',
         title: 'Settings',
         body:
-          'Open Settings to refuel, adjust your profile, and access data tools like resets when you need a clean slate.',
+          'Open Settings to refuel, adjust your profile, or use Data Tools to backup, restore or reset your account.',
       },
       {
         id: 'search',
